@@ -34,6 +34,32 @@ pip3 install Pillow
 
 ---
 
+### 使用方法
+
+**重要说明**：请直接使用 Bash 执行 Python 脚本，不要使用 Skill 工具调用。
+
+**Windows 系统**：
+```powershell
+# 执行脚本（注意路径和引号）
+python skills\image-processor\scripts\image_processor.py "C:\图片\photo.jpg" -s 0.5
+
+# 或使用正斜杠避免转义问题
+python skills/image-processor/scripts/image_processor.py "C:/图片/photo.jpg" -s 0.5
+```
+
+**macOS/Linux 系统**：
+```bash
+# 执行脚本
+python3 skills/image-processor/scripts/image_processor.py ./photo.jpg -s 0.5
+```
+
+**输出文件**：
+- 单个文件处理：默认输出到 `processed/` 子目录
+- 批量处理目录：同上
+- 可用 `-o` 或 `--output` 指定输出路径
+
+---
+
 ### 一、格式转换
 
 支持以下格式互转：
@@ -213,10 +239,22 @@ pip3 install Pillow
 A: 使用 `--bg-color white` 指定白色背景。
 
 **Q: ICO 图标太大或太小？**
-A: 使用 `--ico-size` 指定尺寸（如 64, 128, 256）。
+A: 使用 `--ico-size` 参数指定尺寸（如 64, 128, 256）。
 
 **Q: 压缩后文件反而变大？**
 A: 某些图片（如截图）本身已高度优化。尝试降低质量或使用 `--target-size`。
 
 **Q: 批量处理支持子目录吗？**
 A: 当前版本仅处理指定目录下的文件，不递归子目录。
+
+**Q: Windows 路径包含空格或特殊字符怎么办？**
+A: 用双引号包裹路径，例如：
+```powershell
+python skills\image-processor\scripts\image_processor.py "C:\My Images\photo.jpg" -s 0.5
+```
+
+**Q: 找不到输出文件？**
+A: 默认输出到 `processed/` 子目录。处理 `C:\图片\photo.jpg` 后，文件保存在 `C:\图片\processed\photo_resized.jpg`。可用 `-o` 参数指定输出位置。
+
+**Q: 如何覆盖原文件？**
+A: 使用 `--overwrite` 参数。
