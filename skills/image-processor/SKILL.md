@@ -10,7 +10,20 @@ argument-hint: "文件路径或目录 [操作选项]"
 
 ### 环境要求
 
-请确保已安装 Python 3 和 Pillow 库：
+请确保已安装 Python 3 和 Pillow 库。
+
+**脚本路径**：`skills/image-processor/scripts/image_processor.py`
+
+**Windows 系统**：
+```powershell
+# 检查 Python
+python --version
+
+# 安装 Pillow
+pip install Pillow
+```
+
+**macOS/Linux 系统**：
 ```bash
 # 检查 Python
 python3 --version
