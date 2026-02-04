@@ -1,6 +1,6 @@
 ---
 name: image-processor
-description: 综合图片处理工具。支持格式转换（JPG/PNG/WebP/ICO/BMP/TIFF互转）、分辨率调整（保持比例或精确尺寸）、图片压缩（智能压缩或固定质量）。可单独使用或组合使用
+description: 综合图片处理工具。支持格式转换（JPG/PNG/WebP/ICO/BMP/TIFF互转）、分辨率调整（保持比例或精确尺寸）、图片压缩。如需链式操作，请分多次调用
 argument-hint: "文件路径或目录 [操作选项]"
 ---
 
@@ -128,23 +128,22 @@ pip3 install Pillow
 
 ---
 
-### 四、组合使用
+### 四、链式操作
 
-所有功能可以组合使用，顺序为：格式转换 → 分辨率调整 → 压缩
+如果用户要求进行多个操作（如"减少50%分辨率并转换成WebP"），请分多次调用本工具，每次只执行一个操作。
+
+**操作顺序建议**：格式转换 → 分辨率调整 → 图片压缩
 
 **示例**：
+用户要求："把这张图片减少50%的分辨率并且转换成webp格式"
+
+处理步骤：
 ```bash
-# 转换格式 + 调整尺寸
-/image-processor logo.png --convert jpg -w 800
+# 第一步：减少50%分辨率
+/image-processor photo.jpg -s 0.5
 
-# 调整尺寸 + 压缩
-/image-processor photo.jpg -w 1920 -q 85
-
-# 全套处理：转换 + 调整 + 压缩
-/image-processor image.png --convert webp -w 1200 -q 90
-
-# 网页优化流程
-/image-processor ./images/ --convert webp -w 1200 --optimize
+# 第二步：转换为WebP格式
+/image-processor photo_scaled.jpg --convert webp
 ```
 
 ---
