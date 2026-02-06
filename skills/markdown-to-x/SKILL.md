@@ -1,93 +1,55 @@
 ---
 name: markdown-to-x
-description: Convert Markdown documents to X (Twitter) compatible plain text format. Use when users need to post Markdown content to X (formerly Twitter), including threads, articles, or long-form posts. Triggers include "convert markdown to X", "md to twitter format", "post markdown to X", or any request involving Markdown and X/Twitter publishing.
-allowed-tools: Bash(markdown-to-x:*)
+description: Convert Markdown documents to X (Twitter) compatible plain text format. Use when users need to post Markdown content to X (formerly Twitter), including threads, articles, or code snippets. Triggers include "convert markdown to X", "md to twitter format", "post markdown to X", or any request involving Markdown and X publishing.
+allowed-tools: Bash(skills/markdown-to-x/scripts/markdown-to-x.py:*)
 ---
 
 # Markdown to X Format Converter
 
-Convert Markdown documents to X-compatible plain text format.
+Cleans Markdown syntax while preserving layout for posting to X/Twitter.
 
 ## Basic Usage
 
 ```bash
-# Convert a markdown file
-markdown-to-x article.md
+# Convert markdown file (output: article-twitter.md)
+skills/markdown-to-x/scripts/markdown-to-x.py article.md
 
-# Convert inline text
-markdown-to-x "# Hello World"
-
-# Read from stdin
-echo "# My Post" | markdown-to-x -
+# Custom output path
+skills/markdown-to-x/scripts/markdown-to-x.py article.md -o output.txt
 ```
 
 ## Options
 
 | Option | Description |
 |--------|-------------|
-| `-m, --mode` | Output mode: `article` (default) or `thread` |
-| `-l, --keep-links` | Keep links (default: true) |
-| `-c, --code-style` | Code block style: `inline` (default), `blockquote`, `plain` |
-| `-s, --max-length` | Max characters per tweet in thread mode (default: 280) |
-| `-o, --output` | Output to file instead of stdout |
+| `-o, --output` | Output file path (optional) |
+| `-h, --help` | Show help message |
 
 ## Conversion Rules
 
 ### Headings
-
-| Markdown | X Format |
-|----------|----------|
-| `# Title` | `Title` |
-| `## Section` | `【Section】` |
-| `### Subsection` | `— Subsection —` |
+- `# Title` → `Title` (removed)
 
 ### Lists
-
-| Markdown | X Format |
-|----------|----------|
-| `- Item` | `• Item` |
-| `1. Step` | `1️⃣ Step` |
+- Unordered `- item` → stays as `- item`
+- Ordered `1. step` → stays as `1. step`
 
 ### Code
-
-```markdown
-`inline code`
-```
-
-⬇️
-
-```
-inline code
-```
-
-Code blocks are converted based on style:
-- `inline`: Prefixed with "代码示例："
-- `blockquote`: Prepended with `>`
-- `plain`: Indented with spaces
+- Code blocks ``` → removed
+- Inline `code` → `code` (backticks removed)
 
 ### Links
-
-```markdown
-[OpenAI](https://openai.com)
-```
-
-⬇️
-
-```
-OpenAI https://openai.com
-```
+- `[text](url)` → `text url`
 
 ### Emphasis
+- `**bold**` → `bold`
+- `*italic*` → `italic`
+- `~~deleted~~` → `deleted`
 
-| Markdown | X Format |
-|----------|----------|
-| `**bold**` | `【bold】` |
-| `*italic*` | `👉 italic` |
-| `~~deleted~~` | `deleted` |
+### Images
+- `![alt](url)` → removed
 
-## Examples
-
-### Article Mode (Default)
+## Example
 
 Input:
 ```markdown
@@ -99,40 +61,23 @@ Input:
 Conclusion: **Conversion needed**
 ```
 
-Output:
+Output (`article-twitter.md`):
 ```
 Why X Doesn't Support Markdown
 
-• Markdown is for documents
-• X is for streaming reads
+- Markdown is for documents
+- X is for streaming reads
 
-结论：【Conversion needed】
-```
-
-### Thread Mode
-
-```bash
-markdown-to-x long-article.md --mode thread
-```
-
-Output (array format):
-```
-[
-  "First paragraph...",
-  "Second paragraph...",
-  "Third paragraph..."
-]
+结论: Conversion needed
 ```
 
 ## Common Use Cases
 
 1. **X Premium Articles**: Convert full Markdown documents
-2. **Twitter Threads**: Auto-split long content into tweet-sized chunks
-3. **Technical Posts**: Share code snippets with proper formatting
-4. **Blog Imports**: Republish Markdown blog posts to X
+2. **Technical Posts**: Share code snippets without markdown formatting
+3. **Blog Imports**: Republish Markdown blog posts to X
 
 ## Tips
 
-- Use `--code-style plain` for minimal formatting
-- Use `--mode thread` for Twitter threads (auto-splits)
-- Use `-o output.txt` to save to file
+- Output file: `xxx-twitter.md` (auto-generated)
+- Use `-o` to specify custom output path
